@@ -35,7 +35,9 @@ def init_sessions():
         "preview": [],
         "step": 0,
         "error": "",
-        "whole_file": None
+        "whole_file": None,
+        "index_column": "",
+        "filtered_columns": None
     }
 
     for key, value in defaults.items():

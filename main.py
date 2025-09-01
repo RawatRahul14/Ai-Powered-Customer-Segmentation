@@ -1,5 +1,6 @@
 # === Python Packages ===
 from fastapi import FastAPI, UploadFile, File
+from typing import Dict, Any
 import pandas as pd
 import io, os
 import redis
@@ -10,8 +11,12 @@ from clusterProject.utils.common import (
     create_uuid
 )
 from clusterProject.validator.validation import (
-    UploadResponse
+    UploadResponse,
+    ColumnResponse
 )
+
+# === Schema ===
+from clusterProject.requests.schema import ColumnRequest
 
 # === FastAPI Connection ===
 app = FastAPI()
@@ -98,5 +103,29 @@ async def upload_file(
         return UploadResponse(
             session_id = None,
             status = "fail",
+            error = str(e)
+        )
+
+@app.post("/columns", response_model = ColumnResponse)
+def get_filtered_columns(
+    payload: ColumnRequest
+):
+    """
+    Removes the name of the column from the whole list
+    """
+    try:
+        """
+        Using a for loop to remove the index column name
+        """
+        filtered = [c for c in payload.all_columns if c != payload.index_column_name]
+
+        # === Returning the List of all the columns ===
+        return ColumnResponse(
+            filtered_columns = filtered
+        )
+
+    # === Returning the error string ===
+    except Exception as e:
+        return ColumnResponse(
             error = str(e)
         )

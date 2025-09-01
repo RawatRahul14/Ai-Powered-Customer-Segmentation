@@ -7,9 +7,10 @@ from clusterProject.utils.common import init_sessions
 
 # === Components ===
 from clusterProject.components.sidebar import render_sidebar
+from clusterProject.components.columns import get_columns
 
 # === FastAPI Endpoint ===
-API_URL = "http://127.0.0.1:8000"  # FastAPI backend
+API_URL = "http://127.0.0.1:8000"
 
 # === Main Body ===
 def main():
@@ -33,12 +34,27 @@ def main():
         render_sidebar(API_URL)
 
     #### === Step 1: Show Preview ===
-    if st.session_state["status"] == "success":
-        st.subheader("Data Preview: ")
-        st.dataframe(pd.DataFrame(st.session_state["preview"]))
-
     if st.session_state["status"] == "fail":
         st.subheader(f"Error: {st.session_state['error']}")
+
+    elif st.session_state["status"] == "success":
+        st.subheader("🗂️ Data Preview: ")
+        st.dataframe(pd.DataFrame(st.session_state["preview"]))
+
+        # === Updating the step ===
+        st.session_state["step"] = 1
+
+        #### === Step 2: Selecting the Index Column ===
+        if st.session_state["step"] == 1:
+            st.markdown("---")
+            st.subheader("🔑 Select the index column:")
+            ## === Column Selection function ===
+            get_columns(API_URL)
+
+            #### === Step 3: Selecting the Columns ===
+            if st.session_state["step"] == 2:
+                st.markdown("---")
+                st.subheader("📊 Select Columns for Clustering:")
 
 # === Runing the function ===
 if __name__ == "__main__":

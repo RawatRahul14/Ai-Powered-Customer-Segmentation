@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from typing import List, Dict, Any, Optional, Literal
 
 # === Validators ===
+
+## === File Upload ===
 class UploadResponse(BaseModel):
     session_id: Optional[str] = None
     status: Literal["success", "fail"] = "fail"
@@ -12,3 +14,8 @@ class UploadResponse(BaseModel):
     preview: Optional[List[Dict[str, Any]]] = None
     error: Optional[str] = None
     whole_file: Optional[List[Dict[str, Any]]] = None
+
+# === Columns ===
+class ColumnResponse(BaseModel):
+    filtered_columns: Optional[List[str]] = None
+    error: Optional[str] = ""
