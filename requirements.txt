@@ -1,4 +1,24 @@
+# === Data and Machine Learning ===
+numpy
+pandas
+scikit-learn
+
 # === Package to handle excel files ===
 openpyxl
+xlrd
+
+# === Frontend ===
+streamlit
+requests
+
+# === Backend ===
+fastapi
+uvicorn[standard]
+pydantic
+redis
+python-multipart
+
+# === Dev Tools ===
+python-dotenv
 
 -e .
