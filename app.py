@@ -2,6 +2,13 @@
 import streamlit as st
 import pandas as pd
 
+# === Explanations ===
+from clusterProject.explanations import (
+    intro,
+    weightage,
+    scaler_md
+)
+
 # === Utils ===
 from clusterProject.utils.common import init_sessions
 
@@ -11,6 +18,7 @@ from clusterProject.components.columns import (
     get_index,
     get_column_names
 )
+from clusterProject.components.weightage import apply_weightage
 
 # === FastAPI Endpoint ===
 API_URL = "http://127.0.0.1:8000"
@@ -32,6 +40,7 @@ def main():
 
     # === Page Title ===
     st.header("📊 AI Powered Customer Segmentation")
+    st.markdown(intro)
 
     ## === Sidebar ===
     with st.sidebar:
@@ -68,7 +77,24 @@ def main():
                 #### === Step 4: Applying weightage ===
                 if st.session_state["step"] >= 3:
                     st.markdown("---")
-                    st.subheader("📊 Select Columns for Clustering")
+                    st.subheader("⚖️ Do You Want to Apply Weightage to Selected Features?")
+
+                    ## === Explanantion ===
+                    with st.expander("💡 Why use weightage?"):
+                        st.markdown(weightage)
+
+                    ## === Applying the weighage ===
+                    apply_weightage(API_URL)
+
+                    #### === Step 5: Applying weightage ===
+                    if st.session_state["step"] >= 4:
+                        st.markdown("---")
+                        st.subheader("📏 Choose a Feature Scaling Method")
+
+                        ## === Explanantion ===
+                        with st.expander("💡 Why scale features?"):
+                            st.markdown(scaler_md)
+
 
 # === Runing the function ===
 if __name__ == "__main__":

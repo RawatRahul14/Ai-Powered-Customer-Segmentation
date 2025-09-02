@@ -38,7 +38,8 @@ def init_sessions():
         "index_column": "",
         "filtered_columns": None,
         "selected_columns": None,
-        "step": 0
+        "step": 0,
+        "feature_weights": None
     }
 
     for key, value in defaults.items():
