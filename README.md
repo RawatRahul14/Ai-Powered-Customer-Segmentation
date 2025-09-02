@@ -1,11 +1,6 @@
 # 📊 AI-Powered-Customer-Segmentation
 
-![Python](https://img.shields.io/badge/python-3.9%2B-blue)  
-![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green)  
-![Streamlit](https://img.shields.io/badge/Streamlit-1.30+-brightgreen)  
-![Redis](https://img.shields.io/badge/Redis-7.0+-red)  
-![scikit--learn](https://img.shields.io/badge/scikit--learn-1.3+-orange)  
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)  
+![Python](https://img.shields.io/badge/python-3.9%2B-blue)  ![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green)  ![Streamlit(https://img.shields.io/badge/Streamlit-1.30+-brightgreen)]  ![Redis](https://img.shields.io/badge/Redis-7.0+-red)  ![scikit--learn](https://img.shields.io/badge/scikit--learn-1.3+-orange)  ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)  
 
 An end-to-end AI-driven customer segmentation system built with FastAPI, Streamlit, and Redis. The project allows users to upload datasets, preview them, select features, run clustering algorithms such as K-Means, and visualize the results interactively. The backend is designed in a modular and production-ready way with FastAPI, making it easy to integrate directly into a React frontend or any other modern UI framework.
 
