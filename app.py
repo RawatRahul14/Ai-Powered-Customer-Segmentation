@@ -7,7 +7,10 @@ from clusterProject.utils.common import init_sessions
 
 # === Components ===
 from clusterProject.components.sidebar import render_sidebar
-from clusterProject.components.columns import get_columns
+from clusterProject.components.columns import (
+    get_index,
+    get_column_names
+)
 
 # === FastAPI Endpoint ===
 API_URL = "http://127.0.0.1:8000"
@@ -18,6 +21,7 @@ def main():
     AI Powered Customer Segmentation
     """
 
+    # === Initialising all keys ===
     init_sessions()
 
     # === Page Configurations ===
@@ -42,19 +46,29 @@ def main():
         st.dataframe(pd.DataFrame(st.session_state["preview"]))
 
         # === Updating the step ===
-        st.session_state["step"] = 1
+        if st.session_state["step"] == 0:
+            st.session_state["step"] = 1
 
         #### === Step 2: Selecting the Index Column ===
-        if st.session_state["step"] == 1:
+        if st.session_state["step"] >= 1:
             st.markdown("---")
             st.subheader("🔑 Select the index column:")
+
             ## === Column Selection function ===
-            get_columns(API_URL)
+            get_index(API_URL)
 
             #### === Step 3: Selecting the Columns ===
-            if st.session_state["step"] == 2:
+            if st.session_state["step"] >= 2:
                 st.markdown("---")
-                st.subheader("📊 Select Columns for Clustering:")
+                st.subheader("📊 Select Columns for Clustering")
+
+                ## === Selecting Columns ===
+                get_column_names()
+
+                #### === Step 4: Applying weightage ===
+                if st.session_state["step"] >= 3:
+                    st.markdown("---")
+                    st.subheader("📊 Select Columns for Clustering")
 
 # === Runing the function ===
 if __name__ == "__main__":

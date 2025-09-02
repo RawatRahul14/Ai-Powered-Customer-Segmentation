@@ -35,8 +35,6 @@ def render_sidebar(
             st.session_state["error"] = data["error"]
             st.session_state["whole_file"] = data["whole_file"]
 
-            st.session_state["step"] = 1
-
             st.success(f"✅ File '{data['file_name']}' uploaded successfully!")
         else:
             st.error(f"❌ Upload failed: {response.text}")

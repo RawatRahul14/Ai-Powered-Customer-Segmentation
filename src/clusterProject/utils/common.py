@@ -33,12 +33,14 @@ def init_sessions():
         "columns": [],
         "status": None,
         "preview": [],
-        "step": 0,
         "error": "",
         "whole_file": None,
         "index_column": "",
-        "filtered_columns": None
+        "filtered_columns": None,
+        "selected_columns": None,
+        "step": 0
     }
 
     for key, value in defaults.items():
-        st.session_state[key] = value
+        if key not in st.session_state:
+            st.session_state[key] = value
