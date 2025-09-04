@@ -6,17 +6,25 @@ import io, os
 import redis
 from dotenv import load_dotenv
 
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
+from pathlib import Path
+import numpy as np
+
 # === Custom Modules ===
 from clusterProject.utils.common import (
     create_uuid
 )
 from clusterProject.validator.validation import (
     UploadResponse,
-    ColumnResponse
+    ColumnResponse,
+    ScalingResponse
 )
 
 # === Schema ===
-from clusterProject.requests.schema import ColumnRequest
+from clusterProject.requests.schema import (
+    ColumnRequest,
+    ScaledRequest
+)
 
 # === FastAPI Connection ===
 app = FastAPI()
@@ -127,5 +135,64 @@ def get_filtered_columns(
     # === Returning the error string ===
     except Exception as e:
         return ColumnResponse(
+            error = str(e)
+        )
+
+@app.post("/scaling", response_model = ScalingResponse)
+def get_scaled_data(
+    payload: ScaledRequest
+):
+    """
+    Scales the data based on the user's choice
+    """
+    try:
+        ## === Initialising the Scaler ===
+        scaler = None
+
+        ## === Selecting the scaler ===
+        if payload.scaling_option == "MinMaxScaler":
+            scaler = MinMaxScaler()
+        elif payload.scaling_option == "RobustScaler":
+            scaler = RobustScaler()
+        else:
+            scaler = StandardScaler()
+
+        ## === Applying the scaler only on the selected columns ===
+        file_path: Path = Path(f"uploads/{payload.file_name}")
+
+        ## === Opening the file depending on the extension ===
+        if file_path.suffix == ".csv":
+            data = pd.read_csv(file_path)
+        elif file_path.suffix in [".xls", ".xlsx"]:
+            data = pd.read_excel(file_path)
+
+        selected_columns_data = data[payload.selected_columns].copy()
+
+        scaled_data = scaler.fit_transform(selected_columns_data)
+
+        ## === Applying the weightage ===
+        weights_array = np.array([payload.feature_weights[col] for col in payload.selected_columns])
+        scaled = scaled_data * weights_array
+
+        ## === Changing the frmat to pandas DataFrame ===
+        scaled_df = pd.DataFrame(
+            scaled,
+            columns = payload.selected_columns
+        )
+        scaled_df = scaled_df.astype(float)
+
+        ## === Adding the Index ===
+        scaled_df.insert(
+            0,
+            payload.index_column,
+            data[payload.index_column]
+        )
+
+        return ScalingResponse(
+            scaled = scaled_df.to_dict(orient = "records")
+        )
+
+    except Exception as e:
+        return ScalingResponse(
             error = str(e)
         )

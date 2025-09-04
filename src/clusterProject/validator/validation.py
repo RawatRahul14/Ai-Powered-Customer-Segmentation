@@ -19,3 +19,7 @@ class UploadResponse(BaseModel):
 class ColumnResponse(BaseModel):
     filtered_columns: Optional[List[str]] = None
     error: Optional[str] = ""
+
+class ScalingResponse(BaseModel):
+    scaled: Optional[List[Dict[str, Any]]] = None
+    error: Optional[str] = None

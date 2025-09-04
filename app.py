@@ -19,6 +19,7 @@ from clusterProject.components.columns import (
     get_column_names
 )
 from clusterProject.components.weightage import apply_weightage
+from clusterProject.components.scaling import apply_scaling
 
 # === FastAPI Endpoint ===
 API_URL = "http://127.0.0.1:8000"
@@ -84,7 +85,7 @@ def main():
                         st.markdown(weightage)
 
                     ## === Applying the weighage ===
-                    apply_weightage(API_URL)
+                    apply_weightage()
 
                     #### === Step 5: Applying weightage ===
                     if st.session_state["step"] >= 4:
@@ -95,6 +96,12 @@ def main():
                         with st.expander("💡 Why scale features?"):
                             st.markdown(scaler_md)
 
+                        apply_scaling(API_URL)
+
+                        #### === Step 6: Clustering ===
+                        if st.session_state["step"] >= 5:
+                            st.markdown("---")
+                            st.subheader("📏 Choose a Feature Scaling Method")
 
 # === Runing the function ===
 if __name__ == "__main__":

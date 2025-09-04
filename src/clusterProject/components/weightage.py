@@ -2,11 +2,8 @@
 from typing import Dict
 import streamlit as st
 
-
 # === Main Function to handle the weightage ===
-def apply_weightage(
-        API_URL: str
-):
+def apply_weightage():
     """
     Function will apply the weighatge to every column if, told you the user
     """
@@ -21,7 +18,7 @@ def apply_weightage(
         If the user wants to apply weights
         """
         # === Dictionary to hold values ===
-        feature_weights: Dict[str, int] = {}
+        feature_weights: Dict[str, float] = {}
 
         ## === Getting weigts for each value selected by the user ===
         for col in st.session_state["selected_columns"]:
